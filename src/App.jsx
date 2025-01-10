@@ -1,11 +1,12 @@
 import { Button, Card, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { Navbar } from "./components/Navbar/Navbar";
 import { DoctorCard } from "./components/DoctorCard/DoctorCard";
-import { doctorData } from "./utils/data";
 import { GlobeIcon } from "./assets/icons/GlobeIcon";
 import { Filter } from "./components/Filter/Filter";
+import { useDoctorsHook } from "./providers/DoctorsProvider";
 
 function App() {
+  const doctorData = useDoctorsHook();
   return (
     <VStack p={4}>
       <Navbar />
