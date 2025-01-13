@@ -28,7 +28,7 @@ export const Navbar = () => {
     }
   }, [windowsize]);
   return (
-    <Box position="absolute" zIndex={100} w="full" px={4}>
+    <Box position="fixed" zIndex={100} w="full" px={4}>
       <Flex
         w="full"
         justifyContent="space-between"
