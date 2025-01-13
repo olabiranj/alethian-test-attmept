@@ -18,8 +18,8 @@ import { useState } from "react";
 export const DoctorCard = ({ doctor }) => {
   const [showSlot, setShowSlot] = useState(false);
   const toggleSlot = () => {
-    setShowSlot(prevState => !prevState)
-  }
+    setShowSlot((prevState) => !prevState);
+  };
   return (
     <Card
       w="full"
@@ -33,8 +33,9 @@ export const DoctorCard = ({ doctor }) => {
         p={3}
         alignItems="flex-start"
         justifyContent="space-between"
+        flexWrap="wrap"
       >
-        <HStack>
+        <HStack flexWrap="wrap">
           <Image src={doctor.img} alt="Dan Abramov" borderRadius={20} />
           <VStack alignItems="flex-start" spacing={1}>
             <Text fontWeight="bold" fontSize="xl">
@@ -46,10 +47,10 @@ export const DoctorCard = ({ doctor }) => {
               {doctor.address}
             </Text>
             <Tag size="lg" background="orange.200">
-              <StarIcon color='orange.800' mr={2} />
+              <StarIcon color="orange.800" mr={2} />
               {doctor.star}
             </Tag>
-            <HStack>
+            <HStack flexWrap="wrap">
               <AvatarGroup size="sm" max={2}>
                 <Avatar
                   name="Ryan Florence"
@@ -75,11 +76,16 @@ export const DoctorCard = ({ doctor }) => {
         </HStack>
         <HStack>
           <Button variant="outline">
-            <InfoOutlineIcon mr={2} />
-            More Info
+            <InfoOutlineIcon />
+            <Text ml={2} as="span" display={["none", "block", "block"]}>
+              More Info
+            </Text>
           </Button>
           <Button variant="rounded_solid" onClick={toggleSlot}>
-            <CalendarIcon mr={2} /> Book Again
+            <CalendarIcon />
+            <Text ml={2} as="span" display={["none", "block", "block"]}>
+              Book Again
+            </Text>
           </Button>
         </HStack>
       </HStack>
