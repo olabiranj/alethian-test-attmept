@@ -1,12 +1,29 @@
-import { Button, Card, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Card,
+  Heading,
+  HStack,
+  SkeletonCircle,
+  SkeletonText,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { Navbar } from "./components/Navbar/Navbar";
 import { DoctorCard } from "./components/DoctorCard/DoctorCard";
 import { GlobeIcon } from "./assets/icons/GlobeIcon";
 import { Filter } from "./components/Filter/Filter";
-import { useDoctorsHook } from "./providers/DoctorsProvider";
+import { useGetDoctorsListQuery } from "./redux/services/doctorsList";
+import { useSelector } from "react-redux";
 
 function App() {
-  const doctorData = useDoctorsHook();
+  // this alone, is enough to fetch the data if it's coming directly from the API
+  const { data, error, isLoading } = useGetDoctorsListQuery();
+  // but since it's not, I used redux state as shown here.
+  const doctorsList = useSelector((state) => state.doctorsList);
+
   return (
     <VStack p={4}>
       <Navbar />
@@ -20,14 +37,45 @@ function App() {
         <Heading size="xl">
           Migraine Illness with Agile Health Insurance
         </Heading>
-        <Text fontWeight="bold" size="md" mt={5}>
-          1000+ Results
-        </Text>
+        {data && (
+          <Text fontWeight="bold" size="md" mt={5}>
+            1000+ Results
+          </Text>
+        )}
         <HStack w="full" justifyContent="space-between" alignItems="flex-start">
           <VStack w="73%" gap={7}>
-            {doctorData.map((doctor, i) => (
-              <DoctorCard key={i} doctor={doctor} />
-            ))}
+            {isLoading && (
+              <VStack w="full" gap={10}>
+                <Box padding="6" boxShadow="lg" bg="white" w="full">
+                  <SkeletonCircle size="10" />
+                  <SkeletonText
+                    mt="4"
+                    noOfLines={4}
+                    spacing="4"
+                    skeletonHeight="2"
+                  />
+                </Box>
+                <Box padding="6" boxShadow="lg" bg="white" w="full">
+                  <SkeletonCircle size="10" />
+                  <SkeletonText
+                    mt="4"
+                    noOfLines={4}
+                    spacing="4"
+                    skeletonHeight="2"
+                  />
+                </Box>
+              </VStack>
+            )}
+            {error && (
+              <Alert status="error">
+                <AlertIcon />
+                There was an error processing your request
+              </Alert>
+            )}
+            {data &&
+              doctorsList.map((doctor, i) => (
+                <DoctorCard key={i} doctor={doctor} />
+              ))}
           </VStack>
           <VStack w="25%" gap={7}>
             <Card
@@ -51,7 +99,7 @@ function App() {
                 </Button>
               </VStack>
             </Card>
-            <Filter/>
+            <Filter />
           </VStack>
         </HStack>
       </VStack>
